@@ -1,4 +1,4 @@
-﻿/*
+/*
 訓練校 IoT 課題：Raspberry Pi の GPIO を利用して 7セグメント LED に数字をカウントダウンするプログラムを作成せよ。
 
 参考 : Raspberry Pi の GPIO 利用手順

@@ -1,5 +1,5 @@
 /*
-Raspberry Pi ‚Ì GPIO ‚ğ§ŒäE—˜—p‚·‚éŠÖ”ŒQ
+Raspberry Pi ã® GPIO ã‚’åˆ¶å¾¡ãƒ»åˆ©ç”¨ã™ã‚‹é–¢æ•°ç¾¤
 */
 
 #include <stdio.h>
@@ -11,11 +11,11 @@ Raspberry Pi ‚Ì GPIO ‚ğ§ŒäE—˜—p‚·‚éŠÖ”ŒQ
 
 #include "gpio.h"
 
-#define GPIOS 8 // g—p‚·‚é Raspberry Pi ‚ÌGPIO(7ƒZƒOƒƒ“ƒgLED—p)‚Ì”
+#define GPIOS 8 // ä½¿ç”¨ã™ã‚‹ Raspberry Pi ã®GPIO(7ã‚»ã‚°ãƒ¡ãƒ³ãƒˆLEDç”¨)ã®æ•°
 
 /**
- * @brief w’èƒCƒ“ƒfƒNƒX‚É‘Î‰‚µ‚½ GPIO ‚Ì ID ‚ğ•Ô‚·ŠÖ”B
- * @param num 0-7:—v‘fID A-FPa-fp:7ƒZƒOƒƒ“ƒg‚ÌLEDˆÊ’u‚ğ¦‚·ƒAƒ‹ƒtƒ@ƒxƒbƒgB0-7‚É•ÏŠ·‚³‚ê‚éB
+ * @brief æŒ‡å®šã‚¤ãƒ³ãƒ‡ã‚¯ã‚¹ã«å¯¾å¿œã—ãŸ GPIO ã® ID ã‚’è¿”ã™é–¢æ•°ã€‚
+ * @param num 0-7:è¦ç´ ID A-FPa-fp:7ã‚»ã‚°ãƒ¡ãƒ³ãƒˆã®LEDä½ç½®ã‚’ç¤ºã™ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã€‚0-7ã«å¤‰æ›ã•ã‚Œã‚‹ã€‚
            0 : A : 5
            1 : B : 6
            2 : C : 22
@@ -24,16 +24,16 @@ Raspberry Pi ‚Ì GPIO ‚ğ§ŒäE—˜—p‚·‚éŠÖ”ŒQ
            5 : F : 25
            6 : G : 24
            7 : P : 23
- * @return -1:“ü—Í’l‚ª‚¨‚©‚µ‚µ‚©‚Á‚½ê‡B‚»‚êˆÈŠO‚ÍAGPIO‚Ì”’lB
+ * @return -1:å…¥åŠ›å€¤ãŒãŠã‹ã—ã—ã‹ã£ãŸå ´åˆã€‚ãã‚Œä»¥å¤–ã¯ã€GPIOã®æ•°å€¤ã€‚
 */
 int getGpID(char num) {
-    int gpios[GPIOS] = { 5,6,22,27,17,25,24,23 }; // 7ƒZƒOƒƒ“ƒgA?P(=Dp)‚É‘Î‰‚·‚éRaspberry Pi ‚ÌGPIO”Ô†
+    int gpios[GPIOS] = { 5,6,22,27,17,25,24,23 }; // 7ã‚»ã‚°ãƒ¡ãƒ³ãƒˆA?P(=Dp)ã«å¯¾å¿œã™ã‚‹Raspberry Pi ã®GPIOç•ªå·
     int gp = 0;
     if (num >= 0 && num <= 7) {
         gp = num;
     }
     else {
-        num = num | 0x20; //¬•¶š‚É“ˆê‚µ‚Ä”»’f‚·‚éB
+        num = num | 0x20; //å°æ–‡å­—ã«çµ±ä¸€ã—ã¦åˆ¤æ–­ã™ã‚‹ã€‚
         if (num >= 'A' && num <= 'G') {
             gp = num - 'A';
         }
@@ -43,23 +43,23 @@ int getGpID(char num) {
         else return -1;
     }
     if (gp < 0 || gp > 7) {
-        printf("getGpID : Unexpected error.\n");
+        printf("getGpID : Unexpected error.Â¥n");
         return -1;
     }
     return gpios[gp];
 }
 
 /**
- * @brief valueƒtƒ@ƒCƒ‹‚É’l‚ğ‘‚«‚ŞB
- * @param gpion GPIO‚Ì”Ô†
- * @param value ‘‚«‚Ş•¶šƒR[ƒhB—á '1' '0'
+ * @brief valueãƒ•ã‚¡ã‚¤ãƒ«ã«å€¤ã‚’æ›¸ãè¾¼ã‚€ã€‚
+ * @param gpion GPIOã®ç•ªå·
+ * @param value æ›¸ãè¾¼ã‚€æ–‡å­—ã‚³ãƒ¼ãƒ‰ã€‚ä¾‹ '1' '0'
 */
-void write_gpio_value(int gpion, char value) { // gpion ‚ğ’Ç‰Á
+void write_gpio_value(int gpion, char value) { // gpion ã‚’è¿½åŠ 
     int fd;
-    char path_buffer[64]; // ƒtƒ@ƒCƒ‹ƒpƒX‚ğŠi”[‚·‚é‚½‚ß‚Ìƒoƒbƒtƒ@
+    char path_buffer[64]; // ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡
 
-    // ƒtƒ@ƒCƒ‹ƒpƒX•¶š—ñ "/sys/class/gpio/gpio<gpion>/value" ‚ğ¶¬
-    // snprintf :ƒoƒbƒtƒ@ƒI[ƒo[ƒtƒ[‘Îô
+    // ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹æ–‡å­—åˆ— "/sys/class/gpio/gpio<gpion>/value" ã‚’ç”Ÿæˆ
+    // snprintf :ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼å¯¾ç­–
     snprintf(path_buffer, sizeof(path_buffer), "/sys/class/gpio/gpio%d/value", gpion);
 
     fd = open(path_buffer, O_WRONLY);
@@ -68,7 +68,7 @@ void write_gpio_value(int gpion, char value) { // gpion ‚ğ’Ç‰Á
         exit(EXIT_FAILURE);
     }
     if (write(fd, &value, 1) == -1) {
-        printf("[%c]\n", value);
+        printf("[%c]Â¥n", value);
         perror("Failed to set the value to the file.");
         exit(EXIT_FAILURE);
     }
@@ -76,26 +76,26 @@ void write_gpio_value(int gpion, char value) { // gpion ‚ğ’Ç‰Á
 }
 
 /**
- * @brief w’è‚³‚ê‚½GPIO”Ô†‚Ì value ƒtƒ@ƒCƒ‹‚Ö‚ÌƒfƒBƒŒƒNƒgƒŠŠÜ‚Ş•¶š—ñ(ƒpƒX•¶š—ñ)‚ğ¶¬‚·‚éŠÖ”
- * @param gpion GPIO”Ô†
- * @return ¶¬‚³‚ê‚½ƒpƒX•¶š—ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^B¸”s‚µ‚½ê‡‚Í NULL
- * @warning ŒÄ‚Ño‚µŒ³‚Å free() ‚·‚é‚±‚Æ
- * @note ‚»‚Ìfree()‚µ–Y‚êƒŠƒXƒN‚ª‚ ‚é‚Ì‚Å set_gpio_path ‚ğ‘ã‘Ö‚ÅŒã‚©‚çì‚Á‚½B
- * ŒÄ‚Ño‚µ‘¤‚Å•¶š—ñ”z—ñ‚ğ—pˆÓ‚µ‚Ä‚¨‚¯‚Î set_gpio_path ‚ğg‚¦‚ÎÏ‚Ş‚Ì‚ÅA‚±‚¿‚ç‚ÍŒ»óg‚í‚È‚¢B
+ * @brief æŒ‡å®šã•ã‚ŒãŸGPIOç•ªå·ã® value ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå«ã‚€æ–‡å­—åˆ—(ãƒ‘ã‚¹æ–‡å­—åˆ—)ã‚’ç”Ÿæˆã™ã‚‹é–¢æ•°
+ * @param gpion GPIOç•ªå·
+ * @return ç”Ÿæˆã•ã‚ŒãŸãƒ‘ã‚¹æ–‡å­—åˆ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚å¤±æ•—ã—ãŸå ´åˆã¯ NULL
+ * @warning å‘¼ã³å‡ºã—å…ƒã§ free() ã™ã‚‹ã“ã¨
+ * @note ãã®free()ã—å¿˜ã‚Œãƒªã‚¹ã‚¯ãŒã‚ã‚‹ã®ã§ set_gpio_path ã‚’ä»£æ›¿ã§å¾Œã‹ã‚‰ä½œã£ãŸã€‚
+ * å‘¼ã³å‡ºã—å´ã§æ–‡å­—åˆ—é…åˆ—ã‚’ç”¨æ„ã—ã¦ãŠã‘ã° set_gpio_path ã‚’ä½¿ãˆã°æ¸ˆã‚€ã®ã§ã€ã“ã¡ã‚‰ã¯ç¾çŠ¶ä½¿ã‚ãªã„ã€‚
  */
 char* get_gpio_value_path(int gpion) {
     int pin_str_len = snprintf(NULL, 0, "%d", gpion);
 
-    // ƒpƒX‚ÌŒÅ’è•”•ª‚Ì’·‚³
+    // ãƒ‘ã‚¹ã®å›ºå®šéƒ¨åˆ†ã®é•·ã•
     size_t fixed_len = strlen("/sys/class/gpio/gpio/value");
 
-    // •K—v‚È‡ŒvƒTƒCƒY = ŒÅ’è•”•ª + GPIO”Ô† + NULLI’[•¶š
+    // å¿…è¦ãªåˆè¨ˆã‚µã‚¤ã‚º = å›ºå®šéƒ¨åˆ† + GPIOç•ªå· + NULLçµ‚ç«¯æ–‡å­—
     size_t required_len = fixed_len + pin_str_len + 1;
 
-    // ƒq[ƒv‚Éƒƒ‚ƒŠ‚ğ“®“I‚ÉŠm•Û
+    // ãƒ’ãƒ¼ãƒ—ã«ãƒ¡ãƒ¢ãƒªã‚’å‹•çš„ã«ç¢ºä¿
     char* path_buffer = (char*)malloc(required_len);
     if (path_buffer == NULL) {
-        return NULL; // ƒƒ‚ƒŠŠm•Û¸”s
+        return NULL; // ãƒ¡ãƒ¢ãƒªç¢ºä¿å¤±æ•—
     }
 
     snprintf(path_buffer, required_len, "/sys/class/gpio/gpio%d/value", gpion);
@@ -103,32 +103,32 @@ char* get_gpio_value_path(int gpion) {
 }
 
 /**
- * @brief w’è‚³‚ê‚½GPIO”Ô†‚Ì fname ƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX•¶š—ñ‚ğ¶¬
- * @param ptr ‘ã“ü‚·‚é•¶š—ñ”z—ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
- * @param gpion GPIO”Ô†
- * @param fname ƒtƒ@ƒCƒ‹–¼B—á "value"
- * @note ŒÄ‚Ño‚µ‘¤‚Å•¶š—ñ”z—ñ‚ğ—pˆÓ‚µ‚Ä‚¨‚­‚±‚ÆB250ƒoƒCƒg‚ ‚ê‚Î\•ªB
- * ƒƒ‚ƒŠ‰ğ•ú‚µ–Y‚êƒŠƒXƒN‚ª‚ ‚Á‚½‚Ì‚Å get_gpio_value_path ‚Ì‘ã‘Ö‚Æ‚µ‚Ä—pˆÓ‚µ‚½B
+ * @brief æŒ‡å®šã•ã‚ŒãŸGPIOç•ªå·ã® fname ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®ãƒ‘ã‚¹æ–‡å­—åˆ—ã‚’ç”Ÿæˆ
+ * @param ptr ä»£å…¥ã™ã‚‹æ–‡å­—åˆ—é…åˆ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+ * @param gpion GPIOç•ªå·
+ * @param fname ãƒ•ã‚¡ã‚¤ãƒ«åã€‚ä¾‹ "value"
+ * @note å‘¼ã³å‡ºã—å´ã§æ–‡å­—åˆ—é…åˆ—ã‚’ç”¨æ„ã—ã¦ãŠãã“ã¨ã€‚250ãƒã‚¤ãƒˆã‚ã‚Œã°ååˆ†ã€‚
+ * ãƒ¡ãƒ¢ãƒªè§£æ”¾ã—å¿˜ã‚Œãƒªã‚¹ã‚¯ãŒã‚ã£ãŸã®ã§ get_gpio_value_path ã®ä»£æ›¿ã¨ã—ã¦ç”¨æ„ã—ãŸã€‚
  */
 void set_gpio_path(char *ptr, int gpion, char fname[]) {
     snprintf(ptr, 250, "/sys/class/gpio/gpio%d/%s", gpion, fname);
 }
 
 /**
- * @brief ‚·‚×‚Ä‚Ì gpio ‚ğ unexport ‚·‚éB
+ * @brief ã™ã¹ã¦ã® gpio ã‚’ unexport ã™ã‚‹ã€‚
  */
 void unexport_all(void) {
     for (int i = 0; i < GPIOS; i++) {
         unexport((int)getGpID(i));
-        // ƒ^ƒCƒ~ƒ“ƒO’²®‚Ì‚½‚ß‘Ò‹@
-        usleep(500000); // 50ms ‘Ò‹@
-        printf("%d has been unexported.\n", getGpID(i));
+        // ã‚¿ã‚¤ãƒŸãƒ³ã‚°èª¿æ•´ã®ãŸã‚å¾…æ©Ÿ
+        usleep(500000); // 50ms å¾…æ©Ÿ
+        printf("%d has been unexported.Â¥n", getGpID(i));
     }
 }
 
 /**
- * @brief w’è‚³‚ê‚½ GPIO ‚ğ unexport ‚·‚éB
- * @param gpion GPIO”Ô†
+ * @brief æŒ‡å®šã•ã‚ŒãŸ GPIO ã‚’ unexport ã™ã‚‹ã€‚
+ * @param gpion GPIOç•ªå·
  */
 void unexport(int gpion) {
     int fd;
@@ -144,35 +144,35 @@ void unexport(int gpion) {
     }
     write(fd, pin_str, strlen(pin_str));
     close(fd);
-    // printf(">> GPIO %s was unexported. <<\n", pin_str);
+    // printf(">> GPIO %s was unexported. <<Â¥n", pin_str);
 }
 
 /**
- * @brief ‚·‚×‚Ä‚Ì gpio ‚ğ standby (export + direction out) ‚·‚éB
+ * @brief ã™ã¹ã¦ã® gpio ã‚’ standby (export + direction out) ã™ã‚‹ã€‚
  */
 void standby_all(void) {
     for (int i = 0; i < GPIOS; i++) {
         standby(getGpID(i));
-        usleep(500000); // 50ms ‘Ò‹@
+        usleep(500000); // 50ms å¾…æ©Ÿ
     }
 }
 
 /**
- * @brief w’è‚³‚ê‚½ GPIO ‚ğ standby (export + direction out) ‚·‚éB
- * @param gpion GPIO”Ô†
- * @note export ‚µ‚½Œã‚É direction ‚ğİ’è‚·‚é‚Ü‚Å‚É­‚µŠÔ‚ª‚©‚©‚é‚Ì‚ÅAusleep() ‚Å‘Ò‹@‚ğ“ü‚ê‚Ä‚¢‚éB
- * ‚à‚µ¸”s‚·‚éê‡‚ÍA‘Ò‹@ŠÔ‚ğ‘‚â‚µ‚Ä‚İ‚é‚±‚Æ
- * Œµ–§‚É‚ÍAexport ‚µ‚½Œã‚É direction ƒtƒ@ƒCƒ‹‚ª‚Å‚«‚é‚Ü‚Å‘Ò‚Â‚×‚«‚¾‚Á‚½‚ªA§ìŠÔ‚É§ŒÀ‚à‚ ‚èŠÈ—ª‰»‚µ‚½B
+ * @brief æŒ‡å®šã•ã‚ŒãŸ GPIO ã‚’ standby (export + direction out) ã™ã‚‹ã€‚
+ * @param gpion GPIOç•ªå·
+ * @note export ã—ãŸå¾Œã« direction ã‚’è¨­å®šã™ã‚‹ã¾ã§ã«å°‘ã—æ™‚é–“ãŒã‹ã‹ã‚‹ã®ã§ã€usleep() ã§å¾…æ©Ÿã‚’å…¥ã‚Œã¦ã„ã‚‹ã€‚
+ * ã‚‚ã—å¤±æ•—ã™ã‚‹å ´åˆã¯ã€å¾…æ©Ÿæ™‚é–“ã‚’å¢—ã‚„ã—ã¦ã¿ã‚‹ã“ã¨
+ * å³å¯†ã«ã¯ã€export ã—ãŸå¾Œã« direction ãƒ•ã‚¡ã‚¤ãƒ«ãŒã§ãã‚‹ã¾ã§å¾…ã¤ã¹ãã ã£ãŸãŒã€åˆ¶ä½œæ™‚é–“ã«åˆ¶é™ã‚‚ã‚ã‚Šç°¡ç•¥åŒ–ã—ãŸã€‚
  */
 void standby(int gpion) {
     int fd;
     char path_buffer[64];
     char pin_str[4];
 
-    // GPIO”Ô†‚ğ•¶š—ñ‚É•ÏŠ·
+    // GPIOç•ªå·ã‚’æ–‡å­—åˆ—ã«å¤‰æ›
     snprintf(pin_str, sizeof(pin_str), "%d", gpion);
 
-    // GPIO‚ğexport
+    // GPIOã‚’export
     fd = open("/sys/class/gpio/export", O_WRONLY);
     if (fd < 0) {
         perror("Failed to open export file");
@@ -180,20 +180,20 @@ void standby(int gpion) {
     }
     write(fd, pin_str, strlen(pin_str));
     close(fd);
-    printf("- GPIO %s exported.-\n", pin_str);
+    printf("- GPIO %s exported.-Â¥n", pin_str);
 
-    // ƒ^ƒCƒ~ƒ“ƒO’²®‚Ì‚½‚ß‘Ò‹@
-    usleep(500000); // 50ms ‘Ò‹@
+    // ã‚¿ã‚¤ãƒŸãƒ³ã‚°èª¿æ•´ã®ãŸã‚å¾…æ©Ÿ
+    usleep(500000); // 50ms å¾…æ©Ÿ
 
-    // direction ƒtƒ@ƒCƒ‹ƒpƒX‚ğ¶¬
+    // direction ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’ç”Ÿæˆ
     snprintf(path_buffer, sizeof(path_buffer), "/sys/class/gpio/gpio%s/direction", pin_str);
 
-    // direction ‚ğ "out" ‚Éİ’è
+    // direction ã‚’ "out" ã«è¨­å®š
     fd = open(path_buffer, O_WRONLY);
     if (fd < 0) {
-        printf("\n< %s >", path_buffer);
+        printf("Â¥n< %s >", path_buffer);
         perror("Failed to open direction file");
-        // direction ‚Ìİ’è‚É¸”s‚µ‚Ä‚àAexport‚µ‚½GPIO‚Íunexport‚·‚é
+        // direction ã®è¨­å®šã«å¤±æ•—ã—ã¦ã‚‚ã€exportã—ãŸGPIOã¯unexportã™ã‚‹
         fd = open("/sys/class/gpio/unexport", O_WRONLY);
         if (fd >= 0) {
             write(fd, pin_str, strlen(pin_str));
@@ -203,12 +203,12 @@ void standby(int gpion) {
     }
     write(fd, "out", 3);
     close(fd);
-    printf("- GPIO %s directioned.-\n", pin_str);
+    printf("- GPIO %s directioned.-Â¥n", pin_str);
 }
 
 /**
- * @note unexport ‚Æ‚µ‚Äì‚è’¼‚µ‚Ä‚»‚Ì‚Ü‚Üc‚µ‚Ä‚¢‚éB
- * Œ»óg‚í‚ê‚Ä‚¢‚È‚¢B
+ * @note unexport ã¨ã—ã¦ä½œã‚Šç›´ã—ã¦ãã®ã¾ã¾æ®‹ã—ã¦ã„ã‚‹ã€‚
+ * ç¾çŠ¶ä½¿ã‚ã‚Œã¦ã„ãªã„ã€‚
  */
 void unexportGpio(int gpion) {
     int fd;
@@ -221,7 +221,7 @@ void unexportGpio(int gpion) {
     }
     write(fd, pin_str, strlen(pin_str));
     close(fd);
-    printf(">> GPIO %s had been unexported. <<\n", pin_str);
+    printf(">> GPIO %s had been unexported. <<Â¥n", pin_str);
 }
 
 
